@@ -17,7 +17,8 @@ const ingredientData = ref({
     name: '',
     price: 0.0,
     status: 'AVAILABLE',
-    qty: 0,
+    qty: 0.0,
+    unit: '',
     expireDate: '',
 })
 
@@ -70,18 +71,18 @@ const submitIngredient = async () => {
 
 // Validate price range
 const checkPriceRange = () => {
-    if (ingredientData.value.price > 1000) {
-        ingredientData.value.price = 1000
-    } else if (ingredientData.value.price < 0) {
-        ingredientData.value.price = 0
+    if (ingredientData.value.price > 1000.0) {
+        ingredientData.value.price = 1000.0
+    } else if (ingredientData.value.price < 0.0) {
+        ingredientData.value.price = 0.0
     }
 }
 
 const checkQtyRange = () => {
-    if (ingredientData.value.qty > 10000) {
-        ingredientData.value.qty = 10000
-    } else if (ingredientData.value.qty < 0) {
-        ingredientData.value.qty = 0
+    if (ingredientData.value.qty > 10000.0) {
+        ingredientData.value.qty = 10000.0
+    } else if (ingredientData.value.qty < 0.0) {
+        ingredientData.value.qty = 0.0
     }
 }
 
@@ -135,6 +136,7 @@ const goBack = () => {
                             v-model.number="ingredientData.price"
                             min="0"
                             max="1000"
+                            step="0.01"
                             @input="checkPriceRange()"
                             required
                             class="border p-2 rounded w-full"
@@ -153,8 +155,30 @@ const goBack = () => {
                             @input="checkQtyRange()"
                             min="0"
                             max="10000"
+                            step="0.01"
                             class="border p-2 rounded w-full"
                         />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label
+                            for="unit"
+                            class="block font-semibold text-gray-700"
+                        >
+                            Unit
+                        </label>
+                        <select
+                            v-model="ingredientData.unit"
+                            id="unit"
+                            class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+                        >
+                            <option value="GRAM">Gram</option>
+                            <option value="MILLIGRAM">Milligram</option>
+                            <option value="LITER">Liter</option>
+                            <option value="MILLILITER">Milliliter</option>
+                            <option value="TABLE_SPOON">Table spoon</option>
+                            <option value="TEA_SPOON">Tea spoon</option>
+                        </select>
                     </div>
 
                     <div>

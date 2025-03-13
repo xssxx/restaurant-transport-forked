@@ -5,7 +5,7 @@ import ku.cs.restaurant.dto.food.FoodsResponse;
 import ku.cs.restaurant.entity.Food;
 import ku.cs.restaurant.entity.Ingredient;
 import ku.cs.restaurant.entity.Recipe;
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import ku.cs.restaurant.repository.FoodRepository;
 import org.springframework.stereotype.Service;
 
@@ -47,12 +47,12 @@ public class FoodService {
         for (Food food : foods) {
             // ดึงสูตรอาหารที่เกี่ยวข้องกับ food
             List<Recipe> recipes = food.getRecipes();
-            int max = Integer.MAX_VALUE;
+            double max = Double.MAX_VALUE;
 
             // คำนวณ max จากแต่ละสูตรอาหาร
             for (Recipe recipe : recipes) {
                 Ingredient ingredient = ingredientService.findIngredientById(recipe.getIngredient().getId()).orElseThrow();
-                int possibleMax = ingredient.getQty() / recipe.getQty();
+                double possibleMax = ingredient.getQty() / recipe.getQty();
                 if (possibleMax < max) {
                     max = possibleMax; // เลือกค่าวัตถุดิบที่จำกัดมากที่สุด
                 }

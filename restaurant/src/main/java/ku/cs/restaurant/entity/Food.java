@@ -2,6 +2,7 @@ package ku.cs.restaurant.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import ku.cs.restaurant.common.Status;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -25,7 +26,7 @@ public class Food {
     @Column(name = "f_name")
     private String name;
 
-    @Column(name = "f_price")
+    @Column(name = "f_price", nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double price;
 
     @Enumerated(EnumType.STRING)

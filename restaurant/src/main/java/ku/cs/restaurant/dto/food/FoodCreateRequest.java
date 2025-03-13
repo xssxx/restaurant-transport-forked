@@ -1,6 +1,6 @@
 package ku.cs.restaurant.dto.food;
 
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import lombok.Data;
 
 import java.util.Date;

@@ -15,7 +15,7 @@ const isModalOpened = ref(false)
 const selectedIngredient = ref({
     id: '',
     name: '',
-    qty: 0,
+    qty: 0.0,
     status: '',
     expireDate: '',
 })
@@ -31,7 +31,7 @@ const closeModal = () => {
     selectedIngredient.value = {
         id: '',
         name: '',
-        qty: 0,
+        qty: 0.0,
         status: '',
         expireDate: '',
     } // Reset when modal closes
@@ -133,6 +133,7 @@ const validateRange = () => {
                                 v-model="selectedIngredient.qty"
                                 min="0"
                                 max="1000"
+                                step="0.01"
                                 @input="validateRange()"
                                 type="number"
                                 class="border p-2 w-full"

@@ -1,7 +1,7 @@
 package ku.cs.restaurant.repository;
 
 import ku.cs.restaurant.entity.Order;
-import ku.cs.restaurant.entity.OrderStatus;
+import ku.cs.restaurant.common.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

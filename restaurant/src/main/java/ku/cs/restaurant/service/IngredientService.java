@@ -3,7 +3,7 @@ package ku.cs.restaurant.service;
 import ku.cs.restaurant.dto.financial.CreateFinancialRequest;
 import ku.cs.restaurant.entity.Ingredient;
 import ku.cs.restaurant.repository.IngredientRepository;
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,24 +45,23 @@ public class IngredientService {
     }
 
     // update quantity of an ingredient
-    public Optional<Ingredient> updateQty(UUID id, int amount) {
+    public Optional<Ingredient> updateQty(UUID id, double amount) {
         Optional<Ingredient> optionalIngredient = repository.findById(id);
         optionalIngredient.ifPresent(ingredient -> {
-            int newQty = amount;
             ingredient.setQty(amount);
 
             // Set status to OUT_OF_STOCK if quantity is 0 or less
-            if (ingredient.getQty() <= 0) {
+            if (ingredient.getQty() <= 0.0) {
                 ingredient.setStatus(Status.OUT_OF_STOCK);
-                ingredient.setQty(0); // Ensure quantity doesn't go negative
-            } else if (ingredient.getStatus() == Status.OUT_OF_STOCK && amount > 0) {
+                ingredient.setQty(0.0); // Ensure quantity doesn't go negative
+            } else if (ingredient.getStatus() == Status.OUT_OF_STOCK && amount > 0.0) {
                 ingredient.setStatus(Status.AVAILABLE);
             }
 
             CreateFinancialRequest req = new CreateFinancialRequest();
             req.setIncome(0.0);
 
-            req.setExpense(ingredient.getPrice() * newQty); // price * new amount
+            req.setExpense(ingredient.getPrice() * amount); // price * new amount
             financialService.addFinancial(req);
 
             repository.save(ingredient);

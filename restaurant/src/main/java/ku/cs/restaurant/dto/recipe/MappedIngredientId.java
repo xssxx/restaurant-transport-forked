@@ -7,5 +7,5 @@ import java.util.UUID;
 @Data
 public class MappedIngredientId {
     private UUID id;
-    private int quantity;
+    private double quantity;
 }

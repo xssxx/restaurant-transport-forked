@@ -10,5 +10,5 @@ public class UpdateQtyRequest {
     @NotBlank
     private UUID id;
     @NotBlank
-    private int qty;
+    private double qty;
 }

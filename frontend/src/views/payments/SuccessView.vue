@@ -11,9 +11,9 @@ onMounted(async () => {
     const orderId = route.query.id
     if (orderId) {
         try {
-            const { data: resQty } = await orderApi.updateOrderIngredientQty(
-                orderId
-            )
+            // const { data: resQty } = await orderApi.updateOrderIngredientQty(
+            //     orderId
+            // )
             const { data: resStatus } = await orderApi.updateOrderStatus({
                 id: orderId,
                 status: 'COMPLETE',
@@ -23,7 +23,6 @@ onMounted(async () => {
             localStorage.removeItem('carts')
 
             console.log('Order status updated:', resStatus.data)
-            console.log('Order qty updated', resQty.data)
         } catch (error) {
             console.error(
                 'Failed to update order status:',

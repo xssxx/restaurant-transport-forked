@@ -5,7 +5,10 @@
         <img class="rounded-t-lg h-36 w-full" :src="ingredientData.imagePath" />
         <div class="p-3">
             <h3 class="font-bold text-lg">{{ ingredientData.name }}</h3>
-            <p>Quantity: {{ ingredientData.qty }} หน่วย.</p>
+            <p>
+                Quantity: {{ ingredientData.qty.toFixed(2) }}
+                {{ ingredientData.unit }}.
+            </p>
             <p>Status: {{ ingredientData.status }}</p>
 
             <p

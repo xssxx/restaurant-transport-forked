@@ -60,7 +60,7 @@
                     style="background-color: #dddddd; color: #000000"
                     @click="viewOrderDetailforCook(order.id)"
                 >
-                    View Recipe
+                    View Details
                 </button>
                 <button
                     v-if="order.status === 'COOKING' && role === 'COOK'"
@@ -154,7 +154,9 @@ const markOrderSuccess = async (id) => {
 
 const markOrderCooking = async (id) => {
     try {
+        const { data: resQty } = await orderApi.updateOrderIngredientQty(id)
         await orderApi.updateOrderStatus({ id, status: 'COOKING' })
+        console.log(resQty)
         emit('mark-cooking', id)
         window.location.reload()
     } catch (error) {

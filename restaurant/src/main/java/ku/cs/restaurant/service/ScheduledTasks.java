@@ -1,7 +1,7 @@
 package ku.cs.restaurant.service;
 
 import ku.cs.restaurant.entity.Order;
-import ku.cs.restaurant.entity.OrderStatus;
+import ku.cs.restaurant.common.OrderStatus;
 import ku.cs.restaurant.repository.OrderRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package ku.cs.restaurant.repository;
 
 import jakarta.transaction.Transactional;
 import ku.cs.restaurant.entity.Ingredient;
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

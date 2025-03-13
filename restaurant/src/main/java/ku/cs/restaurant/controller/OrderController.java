@@ -1,5 +1,6 @@
 package ku.cs.restaurant.controller;
 
+import ku.cs.restaurant.common.OrderStatus;
 import ku.cs.restaurant.dto.Payment.PaymentResponse;
 import ku.cs.restaurant.dto.financial.CreateFinancialRequest;
 import ku.cs.restaurant.dto.food.FoodDto;
@@ -88,8 +89,8 @@ public class OrderController {
 
                     // Validate ingredient availability
                     for (Recipe recipe : recipes) {
-                        int ingredientRequiredQty = foodOrder.getQuantity() * recipe.getQty();
-                        int ingredientAvailableQty = recipe.getIngredient().getQty();
+                        double ingredientRequiredQty = foodOrder.getQuantity() * recipe.getQty();
+                        double ingredientAvailableQty = recipe.getIngredient().getQty();
 
                         if (ingredientRequiredQty > ingredientAvailableQty) {
                             return ResponseEntity.status(HttpStatus.INSUFFICIENT_STORAGE)
@@ -253,7 +254,7 @@ public class OrderController {
         Order order = orderService.findOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        if (order.getStatus().equals(OrderStatus.COMPLETE)) return;
+        if (order.getStatus().equals(OrderStatus.COOKING)) return;
 
         CreateFinancialRequest req = new CreateFinancialRequest();
         Optional<Order> existOrder = orderService.findOrderById(id);
@@ -271,8 +272,8 @@ public class OrderController {
             List<Recipe> recipes = food.getRecipes();
 
             for (Recipe r : recipes) {
-                int ingredientUsedQty = r.getQty();
-                int totalUsed = foodOrderedQty * ingredientUsedQty;
+                double ingredientUsedQty = r.getQty();
+                double totalUsed = foodOrderedQty * ingredientUsedQty;
 
                 // Update the ingredient quantity
                 ingredientService.updateQty(r.getIngredient().getId(),  r.getIngredient().getQty() - totalUsed);

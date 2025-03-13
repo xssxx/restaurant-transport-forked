@@ -4,7 +4,7 @@ import ku.cs.restaurant.entity.Order;
 import ku.cs.restaurant.entity.Receipt;
 import ku.cs.restaurant.entity.User;
 import ku.cs.restaurant.repository.OrderRepository;
-import ku.cs.restaurant.entity.OrderStatus;
+import ku.cs.restaurant.common.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

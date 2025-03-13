@@ -14,7 +14,10 @@ public class Financial {
     @JdbcTypeCode(SqlTypes.LOCAL_DATE)
     private LocalDate date;
 
+    @Column(name = "income", columnDefinition = "DECIMAL(10,2)")
     private double income;
+    @Column(name = "expense", columnDefinition = "DECIMAL(10,2)")
     private double expense;
+    @Column(name = "total", columnDefinition = "DECIMAL(10,2)")
     private double total;
 }

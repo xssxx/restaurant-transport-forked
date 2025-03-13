@@ -5,7 +5,7 @@ import ku.cs.restaurant.dto.financial.CreateFinancialRequest;
 import ku.cs.restaurant.dto.ingredient.UpdateQtyRequest;
 import ku.cs.restaurant.dto.ingredient.UpdateStatusRequest;
 import ku.cs.restaurant.entity.Ingredient;
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import ku.cs.restaurant.service.FinancialService;
 import ku.cs.restaurant.service.ImageService;
 import ku.cs.restaurant.service.IngredientService;

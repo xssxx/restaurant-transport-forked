@@ -7,7 +7,7 @@ import router from '@/router/index.js'
 
 const foodData = ref({
     name: '',
-    price: 0,
+    price: 0.0,
     status: 'AVAILABLE',
     recipes: [],
 })
@@ -107,18 +107,18 @@ const createFood = async () => {
 
 // Validate ingredient quantity input
 const validateInput = (ingredient) => {
-    if (ingredient.quantity < 0) {
-        ingredient.quantity = 0 // Prevent negative input
+    if (ingredient.quantity < 0.0) {
+        ingredient.quantity = 0.0 // Prevent negative input
     } else if (ingredient.quantity > ingredient.qty) {
         ingredient.quantity = ingredient.qty // Set to max if over limit
     }
 }
 
 const checkPriceRange = () => {
-    if (foodData.value.price > 1000) {
-        foodData.value.price = 1000
-    } else if (foodData.value.price < 0) {
-        foodData.value.price = 0
+    if (foodData.value.price > 1000.0) {
+        foodData.value.price = 1000.0
+    } else if (foodData.value.price < 0.0) {
+        foodData.value.price = 0.0
     }
 }
 </script>
@@ -143,6 +143,7 @@ const checkPriceRange = () => {
                     type="number"
                     min="0"
                     max="1000"
+                    step="0.01"
                     @input="checkPriceRange()"
                     placeholder="Price"
                     required
@@ -189,6 +190,7 @@ const checkPriceRange = () => {
                             v-model.number="ingredient.quantity"
                             min="0"
                             :max="ingredient.qty"
+                            step="0.01"
                             @input="validateInput(ingredient)"
                         />
                         <span

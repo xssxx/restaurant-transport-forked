@@ -6,7 +6,7 @@ import ku.cs.restaurant.dto.food.FoodDeleteDto;
 import ku.cs.restaurant.dto.food.FoodsResponse;
 import ku.cs.restaurant.dto.recipe.IngredientQtyRequest;
 import ku.cs.restaurant.entity.Food;
-import ku.cs.restaurant.entity.Status;
+import ku.cs.restaurant.common.Status;
 import ku.cs.restaurant.service.FoodService;
 import ku.cs.restaurant.service.ImageService;
 import ku.cs.restaurant.service.IngredientService;

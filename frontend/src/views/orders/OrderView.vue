@@ -114,6 +114,7 @@ const handleViewDetail = (orderId) => {
                             'PENDING',
                             'COMPLETE',
                             'COOKING',
+                            'READY',
                             'DELIVERING',
                             'DELIVERED',
                             'CANCEL',

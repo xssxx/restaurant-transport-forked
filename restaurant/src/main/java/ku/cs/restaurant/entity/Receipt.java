@@ -20,7 +20,7 @@ public class Receipt {
     @Column(name = "b_id")
     private UUID id;
 
-    @Column(name = "b_total")
+    @Column(name = "b_total",columnDefinition = "DECIMAL(10,2)")
     private double total;
 
     @Column(name = "created_at")

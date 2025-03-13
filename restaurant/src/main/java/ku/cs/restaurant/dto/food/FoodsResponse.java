@@ -12,5 +12,5 @@ public class FoodsResponse {
     private String name;
     private double price;
     private String status;
-    private int max;
+    private double max;
 }
