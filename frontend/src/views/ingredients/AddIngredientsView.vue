@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import Sidebar from '@/components/Sidebar.vue'
 import ingredientApi from '@/api/ingredientApi.js'
 import router from '@/router/index.js'
+import axios from 'axios'
 
 // Utility function to format the date to dd-mm-yy
 const formatDateToDDMMYY = (dateStr) => {
@@ -25,12 +26,23 @@ const ingredientData = ref({
 const imageFile = ref(null)
 const imagePreview = ref('')
 
-// Handle file upload and preview
 const handleFileUpload = (event) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files[0]
     if (file) {
-        imageFile.value = file
+        // Get the current timestamp in milliseconds
+        const timestamp = Date.now()
+        const newFileName = `${timestamp}_${file.name}`
+
+        // Clone the file object with the new name
+        const newFile = new File([file], newFileName, { type: file.type })
+
+        // Update the file reference
+        imageFile.value = newFile
+
+        // Generate preview
         imagePreview.value = URL.createObjectURL(file)
+
+        console.log('Updated file:', imageFile.value)
     }
 }
 
@@ -57,6 +69,8 @@ const submitIngredient = async () => {
         formData.append('image', imageFile.value)
 
         await ingredientApi.createIngredient(formData)
+        await axios.post('http://localhost:8000/upload', formData)
+
         alert('Ingredient added successfully!')
         router.push('/ingredient')
     } catch (error) {
@@ -221,6 +235,7 @@ const goBack = () => {
                             id="image"
                             @change="handleFileUpload"
                             accept="image/*"
+                            required
                             class="border p-2 rounded w-full"
                         />
                     </div>

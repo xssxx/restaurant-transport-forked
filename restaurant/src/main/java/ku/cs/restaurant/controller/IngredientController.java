@@ -8,7 +8,9 @@ import ku.cs.restaurant.entity.Ingredient;
 import ku.cs.restaurant.common.Status;
 import ku.cs.restaurant.service.FinancialService;
 import ku.cs.restaurant.service.ImageService;
+import ku.cs.restaurant.service.ImageServiceGo;
 import ku.cs.restaurant.service.IngredientService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +21,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 public class IngredientController {
     private final IngredientService service;
-    private final ImageService imageService;
     private final FinancialService financialService;
-
-    public IngredientController(IngredientService service, ImageService imageService, FinancialService financialService) {
-        this.service = service;
-        this.imageService = imageService;
-        this.financialService = financialService;
-    }
 
     // Create a new ingredient
     @PostMapping("/ingredient")
     public ResponseEntity<ApiResponse<Ingredient>> createIngredient(@RequestPart("ingredient") Ingredient ingredient, @RequestPart("image") MultipartFile image) {
         try {
-            String imagePath = imageService.saveImage("src/main/resources/images/ingredients", image);
-            ingredient.setImagePath(imagePath);
+            ingredient.setImagePath(image.getOriginalFilename());
 
             Ingredient createdIngredient = service.createIngredient(ingredient);
             CreateFinancialRequest req = new CreateFinancialRequest();
@@ -77,7 +72,7 @@ public class IngredientController {
     @GetMapping("/ingredient")
     public ResponseEntity<ApiResponse<List<Ingredient>>> findIngredients() {
         List<Ingredient> ingredients = service.findIngredients();
-        String baseUrl = "http://localhost:8088/images/ingredients/";
+        String baseUrl = "http://localhost:8000/images/";
 
         for (Ingredient ingredient : ingredients) {
             String imagePath = ingredient.getImagePath().replace("\\", "/");

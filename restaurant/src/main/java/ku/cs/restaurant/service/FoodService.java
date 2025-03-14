@@ -36,10 +36,6 @@ public class FoodService {
         return foodRepository.findFoodById(id);
     }
 
-//    public List<Food> getAllFoods() {
-//        return foodRepository.findAll();
-//    }
-
     public List<FoodsResponse> getAllFoods() {
         List<Food> foods = foodRepository.findAll();
         List<FoodsResponse> foodDTOs = new ArrayList<>();

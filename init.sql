@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `food` (
   `f_id` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `f_image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `f_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `f_price` double DEFAULT NULL,
+  `f_price` DECIMAL(10,2) DEFAULT NULL,
   `f_status` enum('AVAILABLE','OUT_OF_STOCK') COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`f_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
@@ -21,8 +21,9 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
   `expire_date` datetime(6) DEFAULT NULL,
   `i_image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `i_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `i_price` double DEFAULT NULL,
+  `i_price` DECIMAL(10,2) DEFAULT NULL,
   `i_qty` int DEFAULT NULL,
+  `unit` enum('GRAM', 'MILLIGRAM', 'LITER', 'MILLILITER', 'TABLE_SPOON', 'TEA_SPOON') COLLATE utf8mb4_general_ci,
   `i_status` enum('AVAILABLE','OUT_OF_STOCK') COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`i_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 CREATE TABLE IF NOT EXISTS `receipt` (
   `b_id` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime(6) DEFAULT NULL,
-  `b_total` double DEFAULT NULL,
+  `b_total` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`b_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -49,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `created_at` datetime(6) NOT NULL,
   `payment_link` text COLLATE utf8mb4_general_ci,
   `o_status` enum('CANCEL','COMPLETE','PENDING', 'COOKING', 'READY', 'SUCCESS','DELIVERING', 'DELIVERED') COLLATE utf8mb4_general_ci NOT NULL,
-  `o_total` double NOT NULL,
+  `o_total` DECIMAL(10,2) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   `b_id` varchar(36) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_id` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -87,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `review` (
 
 CREATE TABLE IF NOT EXISTS `financial` (
   `date` date NOT NULL,
-  `expense` double NOT NULL,
-  `income` double NOT NULL,
-  `total` double NOT NULL,
+  `expense` DECIMAL(10,2) NOT NULL,
+  `income` DECIMAL(10,2) NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
 
@@ -144,12 +145,12 @@ INSERT INTO `food` (`f_id`, `f_image`, `f_name`, `f_price`, `f_status`) VALUES
 	('ed6f1c95-4887-4248-9051-9d33218b0e05', 'src\\main\\resources\\images\\foods\\1730788685166_pork-fried.jpg', 'Fried Pork', 35, 'AVAILABLE');
 
 DELETE FROM `ingredient`;
-INSERT INTO `ingredient` (`i_id`, `expire_date`, `i_image`, `i_name`, `i_price`, `i_qty`, `i_status`) VALUES
-	('007a587c-b861-413f-bfa6-11f24d58924c', '2024-10-31 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730199260204_pork.jpg', 'Pork', 30, 82, 'AVAILABLE'),
-	('11016aab-fd83-4c1b-a0cf-6de026e5f4ae', '2024-11-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730788415631_duck_meat.jpg', 'Duck meat', 50, 26, 'AVAILABLE'),
-	('40b5d8d7-b01c-4674-981f-99cc4bcacd92', '2024-10-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730210989683_rice.jpg', 'Rice', 100, 8, 'AVAILABLE'),
-	('c6b2ef97-e829-45c5-9bc8-7ce7f40db141', '2024-11-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730788525994_line.jpg', 'Noodle', 30, 41, 'AVAILABLE'),
-	('f9ad834b-4a1d-47f7-99a3-c30df090001a', '2025-02-02 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730188262474_fish_sauce.jpg', 'fish sauce', 15, 13, 'AVAILABLE');
+INSERT INTO `ingredient` (`i_id`, `expire_date`, `i_image`, `i_name`, `i_price`, `i_qty`, `unit`, `i_status`) VALUES
+	('007a587c-b861-413f-bfa6-11f24d58924c', '2024-10-31 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730199260204_pork.jpg', 'Pork', 30, 82, 'GRAM', 'AVAILABLE'),
+	('11016aab-fd83-4c1b-a0cf-6de026e5f4ae', '2024-11-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730788415631_duck_meat.jpg', 'Duck meat', 50, 26, 'GRAM', 'AVAILABLE'),
+	('40b5d8d7-b01c-4674-981f-99cc4bcacd92', '2024-10-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730210989683_rice.jpg', 'Rice', 100, 8, 'GRAM', 'AVAILABLE'),
+	('c6b2ef97-e829-45c5-9bc8-7ce7f40db141', '2024-11-30 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730788525994_line.jpg', 'Noodle', 30, 41, 'GRAM', 'AVAILABLE'),
+	('f9ad834b-4a1d-47f7-99a3-c30df090001a', '2025-02-02 07:00:00.000000', 'src\\main\\resources\\images\\ingredients\\1730188262474_fish_sauce.jpg', 'fish sauce', 15, 13, 'MILLILITER', 'AVAILABLE');
 
 DELETE FROM `recipe`;
 INSERT INTO `recipe` (`qty`, `f_id`, `i_id`) VALUES

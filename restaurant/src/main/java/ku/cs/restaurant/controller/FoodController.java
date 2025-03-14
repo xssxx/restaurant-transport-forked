@@ -7,10 +7,8 @@ import ku.cs.restaurant.dto.food.FoodsResponse;
 import ku.cs.restaurant.dto.recipe.IngredientQtyRequest;
 import ku.cs.restaurant.entity.Food;
 import ku.cs.restaurant.common.Status;
-import ku.cs.restaurant.service.FoodService;
-import ku.cs.restaurant.service.ImageService;
-import ku.cs.restaurant.service.IngredientService;
-import ku.cs.restaurant.service.RecipeService;
+import ku.cs.restaurant.service.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class FoodController {
+
     private final FoodService service;
     private final RecipeService recipeService;
-    private final FoodService foodService;
-    private final ImageService imageService;
-
-    public FoodController(FoodService service, RecipeService recipeService, IngredientService ingredientService, FoodService foodService, ImageService imageService) {
-        this.service = service;
-        this.recipeService = recipeService;
-        this.foodService = foodService;
-        this.imageService = imageService;
-    }
 
     @PostMapping("/foods")
     @Transactional
@@ -42,13 +32,14 @@ public class FoodController {
                                                         @RequestPart("ingredients") IngredientQtyRequest ingredients,
                                                         @RequestPart("image") MultipartFile image) {
         try {
-            String imagePath = imageService.saveImage("src/main/resources/images/foods", image);
-            Food food = foodService.createFoodEntity(foodCreateRequest, imagePath);
+            String fileName = image.getOriginalFilename();
+
+            Food food = service.createFoodEntity(foodCreateRequest, fileName);
             Food createdFood = service.createFood(food);
+
             recipeService.createRecipes(ingredients, createdFood);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Food created successfully.", createdFood));
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(false, "Failed to save image: " + e.getMessage(), null));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(false, "Data integrity violation: " + e.getMessage(), null));
         } catch (Exception e) {
@@ -70,8 +61,15 @@ public class FoodController {
     @GetMapping("/foods")
     public ResponseEntity<ApiResponse<List<FoodsResponse>>> getAll() {
         List<FoodsResponse> foods = service.getAllFoods();
-        String imageBaseUrl = "http://localhost:8088/images/foods/";
-        foods.forEach(food -> food.setImagePath(imageBaseUrl + Paths.get(food.getImagePath()).getFileName()));
+        String imageBaseUrl = "http://localhost:8000/images/";
+
+
+        for (FoodsResponse food : foods) {
+            String imagePath = food.getImagePath().replace("\\", "/");
+            String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
+            food.setImagePath(imageBaseUrl + fileName);
+        }
+
         return ResponseEntity.ok(new ApiResponse<>(true, "Foods retrieved successfully.", foods));
     }
 

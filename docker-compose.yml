@@ -14,3 +14,12 @@ services:
       - "3306:3306"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # SQL initialization script
+
+  image_server:
+    build:
+      context: ./image-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./image-server/images:/app/images
+    restart: always
