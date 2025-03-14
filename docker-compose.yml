@@ -23,3 +23,33 @@ services:
     volumes:
       - ./image-server/images:/app/images
     restart: always
+
+  # backend:
+  #   build:
+  #     context: ./restaurant
+  #   container_name: spring-boot-backend
+  #   restart: always
+  #   ports:
+  #     - "8088:8088"
+  #   volumes:
+  #     - ./restaurant:/app
+  #   depends_on:
+  #     - mysql
+  #   env_file:
+  #     - ./restaurant/src/main/resources/.env
+  #   environment:
+  #     - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/sa2?serverTimezone=Asia/Bangkok
+  #     - SPRING_DATASOURCE_USERNAME=root
+  #     - SPRING_DATASOURCE_PASSWORD=
+
+  frontend:
+    image: node:20
+    container_name: vue-frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm i && npm run dev -- --host 0.0.0.0"
