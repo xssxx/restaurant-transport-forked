@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -84,7 +85,15 @@ public class IngredientService {
         repository.deleteById(id);
     }
 
+    public List<Ingredient> findAllByIdsForUpdate(Set<UUID> ids) {
+        return repository.findAllByIdsForUpdate(ids);
+    }
+
     public void decreaseIngredientQtyByOrderId(UUID id) {
         repository.decreaseIngredientQtyByOrderId(id);
+    }
+
+    public void markDepletedAsOutOfStock() {
+        repository.markDepletedAsOutOfStock(Status.OUT_OF_STOCK);
     }
 }

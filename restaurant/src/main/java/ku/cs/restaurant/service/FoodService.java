@@ -7,9 +7,13 @@ import ku.cs.restaurant.common.Status;
 import ku.cs.restaurant.repository.FoodRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class FoodService {
@@ -33,6 +37,13 @@ public class FoodService {
 
     public List<FoodsResponse> getAllFoods() {
         return foodRepository.findAllFoodsWithMax();
+    }
+
+    public Map<UUID, Food> getFoodsMapByIds(List<UUID> ids) {
+        if (ids.isEmpty()) return Collections.emptyMap();
+        return foodRepository.findAllByIdWithRecipes(ids)
+                .stream()
+                .collect(Collectors.toMap(Food::getId, Function.identity()));
     }
 
     public void deleteFoodById(UUID id) {

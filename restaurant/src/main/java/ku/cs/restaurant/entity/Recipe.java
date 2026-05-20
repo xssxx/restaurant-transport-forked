@@ -12,7 +12,7 @@ public class Recipe {
     @Column(name = "qty", nullable = false, columnDefinition = "DECIMAL(10,2)")
     private double qty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("ingredientId")
     @JoinColumn(name = "i_id")
     private Ingredient ingredient;

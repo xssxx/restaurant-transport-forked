@@ -50,6 +50,12 @@ public class Order {
     @JoinColumn(name = "b_id")
     private Receipt receipt;
 
+    public void transitionTo(OrderStatus newStatus) {
+        if (!status.canTransitionTo(newStatus))
+            throw new IllegalStateException("Invalid transition: " + status + " → " + newStatus);
+        this.status = newStatus;
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

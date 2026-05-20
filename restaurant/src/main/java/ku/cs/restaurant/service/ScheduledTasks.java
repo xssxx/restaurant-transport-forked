@@ -18,17 +18,14 @@ public class ScheduledTasks {
         this.orderRepository = orderRepository;
     }
 
-    @Scheduled(fixedRate = 360000)
+    @Scheduled(fixedRate = 3600000) // every 1 hour
     @Transactional
-    // if order did not pay for 24 hours, it'll get cancelled
-    public void updateOrderStatus() {
-        LocalDateTime yesterday = LocalDateTime.now().minusHours(24);
-        List<Order> overdueOrders = orderRepository.findPendingOrdersCreatedBefore(yesterday);
+    public void cancelOverdueOrders() {
+        LocalDateTime cutoff = LocalDateTime.now().minusHours(24);
+        List<Order> overdueOrders = orderRepository.findPendingOrdersCreatedBefore(cutoff);
 
         for (Order order : overdueOrders) {
-            order.setStatus(OrderStatus.CANCEL);
+            order.transitionTo(OrderStatus.CANCEL);
         }
-
-        orderRepository.saveAll(overdueOrders);
     }
 }
