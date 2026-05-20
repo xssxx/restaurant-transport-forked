@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
     private final PaymentService paymentService;
@@ -32,26 +33,12 @@ public class OrderController {
     private final FoodService foodService;
     private final FinancialService financialService;
 
-    public OrderController(OrderService orderService, PaymentService paymentService, UserService userService,
-                           JwtUtils jwtUtils, ReceiptService receiptService, OrderLineService orderLineService,
-                           IngredientService ingredientService, FoodService foodService, FinancialService financialService) {
-        this.orderService = orderService;
-        this.paymentService = paymentService;
-        this.userService = userService;
-        this.jwtUtils = jwtUtils;
-        this.receiptService = receiptService;
-        this.orderLineService = orderLineService;
-        this.ingredientService = ingredientService;
-        this.foodService = foodService;
-        this.financialService = financialService;
-    }
-
     @PostMapping("/order")
     @Transactional
     public ResponseEntity<ApiResponse<PaymentResponse>> createOrder(
-            @RequestBody OrderRequest orderRequest,
-            @RequestHeader("Authorization") String jwt) {
-
+        @RequestBody OrderRequest orderRequest,
+        @RequestHeader("Authorization") String jwt
+    ) {
         try {
             String username = jwtUtils.getUserNameFromJwtToken(jwt);
             Optional<User> optionalUser = userService.getUserByUsername(username);
@@ -63,8 +50,7 @@ public class OrderController {
 
                 // Check if food orders are provided
                 if (foodOrders.isEmpty()) {
-                    return ResponseEntity.badRequest()
-                            .body(new ApiResponse<>(false, "No food orders provided.", null));
+                    return ResponseEntity.badRequest().body(new ApiResponse<>(false, "No food orders provided.", null));
                 }
 
                 // Validate each food order
